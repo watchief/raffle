@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Raffle Landing Page</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        text-align: center;
+        padding: 50px;
+      }
+      h1 {
+        color: #333;
+      }
+      .numbers-grid {
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        gap: 10px;
+        margin: 20px auto;
+        max-width: 500px;
+      }
+      .number-box {
+        background-color: #fff;
+        border: 2px solid #333;
+        padding: 20px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+      .number-box:hover {
+        background-color: #ddd;
+      }
+      .disabled {
+        background-color: #999;
+        color: #fff;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+      #result {
+        margin-top: 20px;
+        font-size: 1.2em;
+      }
+      .winner {
+        color: green;
+      }
+      .loser {
+        color: red;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pick a Number and Win a Movie Ticket!</h1>
+    <p>
+      Choose a number between 1 and 50. If your number is a winning one, you'll
+      win a movie ticket!
+    </p>
+
+    <div class="numbers-grid" id="numbersGrid">
+      <!-- Number buttons will be generated here by JavaScript -->
+    </div>
+
+    <p id="result"></p>
+
+    <script>
+      const winningNumbers = [3, 8, 12, 18, 23, 27, 34, 41, 50]; // 9 winning numbers
+      let userHasPicked = false; // Flag to track if the user has already picked a number
+
+      // Function to create the number grid
+      function createNumberGrid() {
+        const grid = document.getElementById("numbersGrid");
+        for (let i = 1; i <= 50; i++) {
+          const numberBox = document.createElement("div");
+          numberBox.classList.add("number-box");
+          numberBox.textContent = i;
+          numberBox.onclick = function () {
+            checkIfWinner(i, numberBox);
+          };
+          grid.appendChild(numberBox);
+        }
+      }
+
+      // Function to check if a selected number is a winner
+      function checkIfWinner(number, element) {
+        const result = document.getElementById("result");
+
+        // Prevent picking more than one number
+        if (userHasPicked) {
+          result.textContent = "You can only pick one number!";
+          result.className = "loser";
+          return;
+        }
+
+        // Check if the number is a winning one
+        if (winningNumbers.includes(number)) {
+          result.textContent =
+            "Congratulations! You picked a winning number and won a movie ticket!";
+          result.className = "winner";
+        } else {
+          result.textContent = "Sorry, that number didn’t win. Try again!";
+          result.className = "loser";
+        }
+
+        // Disable the number once clicked
+        element.classList.add("disabled");
+        userHasPicked = true; // Set the flag to true after the first pick
+      }
+
+      // Initialize the grid when the page loads
+      createNumberGrid();
+    </script>
+  </body>
+</html>
